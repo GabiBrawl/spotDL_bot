@@ -6,9 +6,7 @@ import ctypes
 from discord_slash import SlashCommand
 from discord.ext import commands
 from env import *
-import socket
 import random
-import subprocess
 from spotdl import Spotdl
 
 
@@ -32,7 +30,7 @@ async def spotdl(ctx, songname, output:str):
         f.write(output)
     await ctx.send('Processing request... One moment please...')
     print('\nSong Downloader Started...' + '\nTriggeredBy: ' + f'@{ctx.author}\n' + 'SongName: ' + songname + '\nSongOutput: ' + output)
-    spotdl = Spotdl(client_id='7917082d6cc046138a386e0962405a86', client_secret='74e7206310f448638f83ef17982ebab5', output_format=output, save_file=output, overwrite='skip', print_errors=True)
+    spotdl = Spotdl(client_id=SCID, client_secret=SCSECRET, output_format=output, save_file=output, overwrite='skip', print_errors=True)
     songs = spotdl.search(str(songname))
     spotdl.download_songs(songs)
     sns = output + songs
@@ -64,13 +62,6 @@ async def clear(ctx, amount:str):
     else:
         await ctx.channel.purge(limit=(int(amount) + 1))
 
-@bot.command(pass_context=True)
-async def ip_address(message):
-    if message.author.id == 799650087478493184:
-        socket.gethostname()
-        await message.channel.send('Bot`s ip address: ' + socket.gethostbyname(socket.gethostname()))
-    else:
-        await message.channel.send('Don`t you think Im gonna give this precious code to you ' + f'<@{message.author.id}>')
 
 @bot.command(pass_context=True)
 async def h(ctx):
